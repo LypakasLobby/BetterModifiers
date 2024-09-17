@@ -45,7 +45,7 @@ public class Modifier {
 
     public boolean allowsAnySpecies() {
 
-        return this.species.contains("*");
+        return this.species.contains("*") || this.species.isEmpty();
 
     }
 

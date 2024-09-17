@@ -35,7 +35,7 @@ public class BetterModifiers {
     public static BasicConfigManager configManager;
     public static ComplexConfigManager modifierConfigManager;
 
-    public BetterModifiers() throws IOException, ObjectMappingException {
+    public BetterModifiers() throws ObjectMappingException {
 
         Path dir = ConfigUtils.checkDir(Paths.get("./config/bettermodifiers"));
         String[] files = new String[]{"bettermodifiers.conf"};

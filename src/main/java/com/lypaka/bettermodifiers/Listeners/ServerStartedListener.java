@@ -17,6 +17,7 @@ public class ServerStartedListener {
         ModifierHandler.loadModifiers();
 
         MinecraftForge.EVENT_BUS.register(new InteractListener());
+        MinecraftForge.EVENT_BUS.register(new ItemListeners());
 
     }
 

@@ -3,6 +3,7 @@ package com.lypaka.bettermodifiers.Modifiers;
 import com.google.common.reflect.TypeToken;
 import com.lypaka.bettermodifiers.BetterModifiers;
 import com.lypaka.bettermodifiers.ConfigGetters;
+import com.lypaka.bettermodifiers.Listeners.ItemListeners;
 import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
 import com.pixelmonmod.pixelmon.api.pokemon.Nature;
@@ -61,6 +62,18 @@ public class ModifierHandler {
             List<String> species = modifier.getSpecies();
             for (String s : species) {
 
+                if (s.contains("form:")) {
+
+                    String form = s.split("form:")[1];
+                    String pokemonSpecies = s.split("form:")[0];
+                    if (pokemon.getForm().is(form) && pokemon.getSpecies().getName().equalsIgnoreCase(pokemonSpecies)) {
+
+                        isAllowed = true;
+                        break;
+
+                    }
+
+                }
                 if (s.equalsIgnoreCase(pokemon.getSpecies().getName())) {
 
                     isAllowed = true;
@@ -82,6 +95,12 @@ public class ModifierHandler {
 
     public static void processModifier (ServerPlayerEntity player, Pokemon pokemon, Modifier modifier) {
 
+        if (ItemListeners.playersDroppedModifier.contains(player.getUUID())) {
+
+            player.sendMessage(FancyText.getFormattedText("&eDetected potentially sketchy stuff from you dropping a modifier while trying to use it, canceling!"), player.getUUID());
+            return;
+
+        }
         List<String> functions = modifier.getFunctions();
         for (String f : functions) {
 
