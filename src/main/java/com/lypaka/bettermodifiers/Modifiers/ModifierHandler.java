@@ -160,6 +160,7 @@ public class ModifierHandler {
 
         player.getItemInHand(Hand.MAIN_HAND).setCount(player.getItemInHand(Hand.MAIN_HAND).getCount() - 1);
         player.sendMessage(FancyText.getFormattedText("&aSuccessfully used the modifier on your " + pokemon.getSpecies().getName()), player.getUUID());
+        ItemListeners.playersDroppedModifier.removeIf(e -> e.toString().equalsIgnoreCase(player.getUUID().toString()));
 
     }
 
