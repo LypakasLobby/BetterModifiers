@@ -28,6 +28,9 @@ public class InteractListener {
 
                 Pokemon pokemon = pixelmon.getPokemon();
                 ItemStack handItem = player.getItemInHand(Hand.MAIN_HAND);
+                // A safety check I apparently need to fucking have?
+                Modifier modifierCheck = ModifierHandler.getFromPlayerHand(player);
+                if (modifierCheck == null) return;
                 if (handItem.getOrCreateTag().contains("ModifierItem")) {
 
                     event.setCanceled(true);

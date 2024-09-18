@@ -21,6 +21,31 @@ public class ModifierHandler {
 
     public static Map<String, Modifier> modifierMap;
 
+    public static Modifier getFromPlayerHand (ServerPlayerEntity player) {
+
+        Modifier modifier = null;
+        String id = player.getItemInHand(Hand.MAIN_HAND).getItem().getRegistryName().toString();
+        String displayName = player.getItemInHand(Hand.MAIN_HAND).getDisplayName().getString();
+        for (Map.Entry<String, Modifier> entry : modifierMap.entrySet()) {
+
+            Modifier m = entry.getValue();
+            if (m.getItemID().equalsIgnoreCase(id)) {
+
+                if (player.getItemInHand(Hand.MAIN_HAND).getOrCreateTag().contains("ModifierItem")) {
+
+                    modifier = m;
+                    break;
+
+                }
+
+            }
+
+        }
+
+        return modifier;
+
+    }
+
     public static void loadModifiers() throws ObjectMappingException {
 
         modifierMap = new HashMap<>();
@@ -64,8 +89,8 @@ public class ModifierHandler {
 
                 if (s.contains("form:")) {
 
-                    String form = s.split("form:")[1];
-                    String pokemonSpecies = s.split("form:")[0];
+                    String form = s.split("form:")[1].replace(" form:", "").replace(" ", "");
+                    String pokemonSpecies = s.split("form:")[0].replace(" form:", "").replace(" ", "");
                     if (pokemon.getForm().getName().equalsIgnoreCase(form) && pokemon.getSpecies().getName().equalsIgnoreCase(pokemonSpecies)) {
 
                         isAllowed = true;
@@ -73,11 +98,14 @@ public class ModifierHandler {
 
                     }
 
-                }
-                if (s.equalsIgnoreCase(pokemon.getSpecies().getName())) {
+                } else {
 
-                    isAllowed = true;
-                    break;
+                    if (s.equalsIgnoreCase(pokemon.getSpecies().getName())) {
+
+                        isAllowed = true;
+                        break;
+
+                    }
 
                 }
 
