@@ -66,7 +66,7 @@ public class ModifierHandler {
 
                     String form = s.split("form:")[1];
                     String pokemonSpecies = s.split("form:")[0];
-                    if (pokemon.getForm().is(form) && pokemon.getSpecies().getName().equalsIgnoreCase(pokemonSpecies)) {
+                    if (pokemon.getForm().getName().equalsIgnoreCase(form) && pokemon.getSpecies().getName().equalsIgnoreCase(pokemonSpecies)) {
 
                         isAllowed = true;
                         break;
