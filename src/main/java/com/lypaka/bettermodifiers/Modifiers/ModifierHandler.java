@@ -132,6 +132,18 @@ public class ModifierHandler {
         List<String> functions = modifier.getFunctions();
         for (String f : functions) {
 
+            if (f.contains("tag ")) {
+
+                String[] split = f.split("tag ");
+                String tag = split[1];
+                if (tag.equalsIgnoreCase("rainbow")) {
+
+                    String rainbowTag = "Rainbow" + pokemon.getSpecies().getName();
+                    pokemon.getPersistentData().putBoolean(rainbowTag, true);
+
+                }
+
+            }
             if (f.contains("apply ")) {
 
                 String[] split = f.split("apply ");

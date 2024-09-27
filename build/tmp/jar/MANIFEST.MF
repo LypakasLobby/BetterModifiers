@@ -3,7 +3,7 @@ Specification-Title: bettermodifiers
 Specification-Vendor: 
 Specification-Version: 1
 Implementation-Title: BetterModifiers
-Implementation-Version: 1.0.1
+Implementation-Version: 1.1.0
 Implementation-Vendor: 
-Implementation-Timestamp: 2024-09-18T01:29:22-0500
+Implementation-Timestamp: 2024-09-26T20:19:13-0500
 
