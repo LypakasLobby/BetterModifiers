@@ -275,7 +275,7 @@ public class ModifierHandler {
             }
             if (f.contains("flag ")) {
 
-                String[] split = f.split("mark ");
+                String[] split = f.split("flag ");
                 String value = split[1];
                 pokemon.addFlag(value);
 
