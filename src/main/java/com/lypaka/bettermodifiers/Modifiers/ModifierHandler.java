@@ -6,11 +6,18 @@ import com.lypaka.bettermodifiers.ConfigGetters;
 import com.lypaka.bettermodifiers.Listeners.ItemListeners;
 import com.lypaka.lypakautils.FancyText;
 import com.lypaka.lypakautils.MiscHandlers.PermissionHandler;
+import com.pixelmonmod.pixelmon.api.battles.attack.AttackRegistry;
+import com.pixelmonmod.pixelmon.api.command.PixelmonCommandUtils;
+import com.pixelmonmod.pixelmon.api.pokemon.LearnMoveController;
 import com.pixelmonmod.pixelmon.api.pokemon.Nature;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.ribbon.RibbonRegistry;
+import com.pixelmonmod.pixelmon.battles.attacks.Attack;
+import com.pixelmonmod.pixelmon.command.impl.TeachCommand;
 import com.pixelmonmod.pixelmon.enums.EnumGrowth;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.TextFormatting;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import java.util.HashMap;
@@ -25,7 +32,6 @@ public class ModifierHandler {
 
         Modifier modifier = null;
         String id = player.getItemInHand(Hand.MAIN_HAND).getItem().getRegistryName().toString();
-        String displayName = player.getItemInHand(Hand.MAIN_HAND).getDisplayName().getString();
         for (Map.Entry<String, Modifier> entry : modifierMap.entrySet()) {
 
             Modifier m = entry.getValue();
@@ -132,6 +138,26 @@ public class ModifierHandler {
         List<String> functions = modifier.getFunctions();
         for (String f : functions) {
 
+            if (f.contains("teach ")) {
+
+                String[] split = f.split("teach ");
+                String move = split[1];
+                if (Attack.hasAttack(move)) {
+
+                    Attack attack = new Attack(move);
+                    if (pokemon.getMoveset().size() >= 4) {
+
+                        LearnMoveController.sendLearnMove(player, pokemon.getUUID(), attack.getActualMove());
+
+                    } else {
+
+                        pokemon.getMoveset().add(attack);
+
+                    }
+
+                }
+
+            }
             if (f.contains("tag ")) {
 
                 String[] split = f.split("tag ");
@@ -164,6 +190,51 @@ public class ModifierHandler {
                     pokemon.setShiny(false);
 
                 }
+                if (value.equalsIgnoreCase("tradeable")) {
+
+                    pokemon.removeFlag("untradeable");
+                    if (pokemon.isUntradeable()) {
+
+                        pokemon.addFlag("tradeable");
+
+                    }
+
+                } else if (value.equalsIgnoreCase("untradeable")) {
+
+                    pokemon.removeFlag("tradeable");
+                    pokemon.addFlag("untradeable");
+
+                }
+                if (value.equalsIgnoreCase("catchable")) {
+
+                    pokemon.removeFlag("uncatchable");
+                    if (pokemon.isUncatchable()) {
+
+                        pokemon.addFlag("catchable");
+
+                    }
+
+                } else if (value.equalsIgnoreCase("uncatchable")) {
+
+                    pokemon.removeFlag("catchable");
+                    pokemon.addFlag("uncatchable");
+
+                }
+                if (value.equalsIgnoreCase("battleable")) {
+
+                    pokemon.removeFlag("unbattleable");
+                    if (pokemon.isUncatchable()) {
+
+                        pokemon.addFlag("battleable");
+
+                    }
+
+                } else if (value.equalsIgnoreCase("unbattleable")) {
+
+                    pokemon.removeFlag("battleable");
+                    pokemon.addFlag("unbattleable");
+
+                }
 
             }
             if (f.contains("growth ")) {
@@ -193,6 +264,20 @@ public class ModifierHandler {
                 String[] split = f.split("form ");
                 String form = split[1];
                 pokemon.setForm(form);
+
+            }
+            if (f.contains("mark ")) {
+
+                String[] split = f.split("mark ");
+                String value = split[1];
+                pokemon.addRibbon(RibbonRegistry.getRibbon(value.toLowerCase()).getValueUnsafe());
+
+            }
+            if (f.contains("flag ")) {
+
+                String[] split = f.split("mark ");
+                String value = split[1];
+                pokemon.addFlag(value);
 
             }
 
